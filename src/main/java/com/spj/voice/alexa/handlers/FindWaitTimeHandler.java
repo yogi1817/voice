@@ -35,23 +35,22 @@ public class FindWaitTimeHandler implements RequestHandler {
     }
 
     private String getSpeechText(HandlerInput handlerInput) {
-        if(handlerInput.getRequestEnvelope()!=null
-                && handlerInput.getRequestEnvelope().getContext()!=null
-                && handlerInput.getRequestEnvelope().getContext().getSystem()!=null
-                && handlerInput.getRequestEnvelope().getContext().getSystem().getUser()!=null
-                && !StringUtils.isEmpty(handlerInput.getRequestEnvelope().getContext().getSystem().getUser().getAccessToken())){
+        if (handlerInput.getRequestEnvelope() != null
+                && handlerInput.getRequestEnvelope().getSession() != null
+                && handlerInput.getRequestEnvelope().getSession().getUser() != null
+                && !StringUtils.isEmpty(handlerInput.getRequestEnvelope().getSession().getUser().getAccessToken())) {
             BarberWaitTimeResponse barberWaitTimeResponse
                     = findMySalonClient.findWaittimeForUser(handlerInput.getRequestEnvelope()
-                                .getContext().getSystem().getUser().getAccessToken());
+                    .getSession().getUser().getAccessToken());
 
-            if("No Favourite Salon Found".equals(barberWaitTimeResponse.getSalonName()))
+            if ("No Favourite Salon Found".equals(barberWaitTimeResponse.getSalonName()))
                 return "No Favourite Salon set, please set your favourite salon in app and then try this service again";
 
-            if("Already checked in".equals(barberWaitTimeResponse.getSalonName()))
-                return "You are already checkedin and your wait time is "+barberWaitTimeResponse.getWaitTime();
+            if ("Already checked in".equals(barberWaitTimeResponse.getSalonName()))
+                return "You are already checkedin and your wait time is " + barberWaitTimeResponse.getWaitTime();
 
-            return "Your wait time for salon "+barberWaitTimeResponse.getSalonName()
-                    +" is "+barberWaitTimeResponse.getWaitTime()+" minutes";
+            return "Your wait time for salon " + barberWaitTimeResponse.getSalonName()
+                    + " is " + barberWaitTimeResponse.getWaitTime() + " minutes";
         }
         return "You are not authenticated, please link your find my salon account with alexa";
     }
