@@ -47,7 +47,7 @@ public class FindWaitTimeHandler implements RequestHandler {
                 return "No Favourite Salon set, please set your favourite salon in app and then try this service again";
 
             if ("Already checked in".equals(barberWaitTimeResponse.getSalonName()))
-                return "You are already checkedin and your wait time is " + barberWaitTimeResponse.getWaitTime();
+                return "You are already checked in and your wait time is " + barberWaitTimeResponse.getWaitTime();
 
             return "Your wait time for salon " + barberWaitTimeResponse.getSalonName()
                     + " is " + barberWaitTimeResponse.getWaitTime() + " minutes";
