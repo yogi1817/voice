@@ -49,7 +49,7 @@ public class CheckInHandler implements RequestHandler {
             }
 
             if ("Customer is already checkedIn".equals(customerCheckInResponse.getMessage())) {
-                return "You are already checked in, ask for your waittime";
+                return "You are already checked in, you can ask for your waittime";
             }
 
             return "You are " + customerCheckInResponse.getMessage();

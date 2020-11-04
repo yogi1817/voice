@@ -1,0 +1,4 @@
+voice:
+  findmysalon:
+    waittimeuser: https://findmysalon.herokuapp.com/findmysalon/checkin/barber/waittime
+    checkIn: https://findmysalon.herokuapp.com/findmysalon/checkin/barber
