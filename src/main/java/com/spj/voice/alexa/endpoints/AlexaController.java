@@ -38,7 +38,7 @@ public class AlexaController {
                                                           @RequestHeader Map<String, String> headers) {
         try {
             log.debug("inside requestIdCard");
-            //verifyAlexaRequest(httpRequest);
+            verifyAlexaRequest(httpRequest);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
             log.debug("verify complete Json request --> {}"+ objectMapper.writeValueAsString(requestEnvelope));
