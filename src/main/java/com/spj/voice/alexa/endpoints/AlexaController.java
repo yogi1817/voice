@@ -37,15 +37,7 @@ public class AlexaController {
             verifyAlexaRequest(httpRequest);
             log.debug("verify complete");
 
-
-           /* Map<String, String> headersMap =
-                    Collections.list(request.getHeaderNames())
-                            .stream()
-                            .collect(Collectors.toMap(
-                                    name -> name,
-                                    request::getHeader));*/
-            //getRequestEnvelop(httpRequest);
-            headers.entrySet().stream().peek(a -> log.debug(a.getKey() + "-" + a.getValue()));
+            headers.forEach((key, value) -> log.debug(key + ":" + value));
             return ResponseEntity.ok(alexaAdapter.processAlexaRequest(requestEnvelope, headers));
         } catch (Exception e) {
             log.error("Bad Request Exception {}", e.getMessage());
