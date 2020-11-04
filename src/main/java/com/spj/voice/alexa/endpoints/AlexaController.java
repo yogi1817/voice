@@ -7,10 +7,14 @@ import com.amazon.ask.servlet.ServletConstants;
 import com.amazon.ask.servlet.verifiers.ServletRequest;
 import com.amazon.ask.servlet.verifiers.SkillRequestSignatureVerifier;
 import com.amazon.ask.util.JacksonSerializer;
+import com.amazonaws.auth.policy.internal.JsonPolicyWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.spj.voice.alexa.ports.in.IAlexaAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +38,13 @@ public class AlexaController {
                                                           @RequestHeader Map<String, String> headers) {
         try {
             log.debug("inside requestIdCard");
-            verifyAlexaRequest(httpRequest);
-            log.debug("verify complete");
+            //verifyAlexaRequest(httpRequest);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+            log.debug("verify complete Json request --> {}"+ objectMapper.writeValueAsString(requestEnvelope));
 
-            headers.forEach((key, value) -> log.debug(key + ":" + value));
-            return ResponseEntity.ok(alexaAdapter.processAlexaRequest(requestEnvelope, headers));
+            //headers.forEach((key, value) -> log.debug(key + ":" + value));
+            return ResponseEntity.ok(alexaAdapter.processAlexaRequest(requestEnvelope));
         } catch (Exception e) {
             log.error("Bad Request Exception {}", e.getMessage());
         }

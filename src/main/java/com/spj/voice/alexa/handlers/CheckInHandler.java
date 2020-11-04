@@ -4,7 +4,7 @@ import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.request.Predicates;
-import com.spj.voice.alexa.pojo.BarberWaitTimeResponse;
+import com.spj.voice.alexa.pojo.CustomerCheckInResponse;
 import com.spj.voice.alexa.ports.out.IFindMySalonClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FindWaitTimeHandler implements RequestHandler {
+public class CheckInHandler implements RequestHandler {
 
     private final IFindMySalonClient findMySalonClient;
 
@@ -35,23 +35,24 @@ public class FindWaitTimeHandler implements RequestHandler {
     }
 
     private String getSpeechText(HandlerInput handlerInput) {
-        if(handlerInput.getRequestEnvelope()!=null
-                && handlerInput.getRequestEnvelope().getContext()!=null
-                && handlerInput.getRequestEnvelope().getContext().getSystem()!=null
-                && handlerInput.getRequestEnvelope().getContext().getSystem().getUser()!=null
-                && !StringUtils.isEmpty(handlerInput.getRequestEnvelope().getContext().getSystem().getUser().getAccessToken())){
-            BarberWaitTimeResponse barberWaitTimeResponse
-                    = findMySalonClient.findWaittimeForUser(handlerInput.getRequestEnvelope()
-                                .getContext().getSystem().getUser().getAccessToken());
+        if (handlerInput.getRequestEnvelope() != null
+                && handlerInput.getRequestEnvelope().getContext() != null
+                && handlerInput.getRequestEnvelope().getContext().getSystem() != null
+                && handlerInput.getRequestEnvelope().getContext().getSystem().getUser() != null
+                && !StringUtils.isEmpty(handlerInput.getRequestEnvelope().getContext().getSystem().getUser().getAccessToken())) {
 
-            if("No Favourite Salon Found".equals(barberWaitTimeResponse.getSalonName()))
+            CustomerCheckInResponse customerCheckInResponse = findMySalonClient.checkInCustomer(handlerInput.getRequestEnvelope()
+                    .getContext().getSystem().getUser().getAccessToken());
+
+            if ("No Favourite Salon Found".equals(customerCheckInResponse.getMessage())) {
                 return "No Favourite Salon set, please set your favourite salon in app and then try this service again";
+            }
 
-            if("Already checked in".equals(barberWaitTimeResponse.getSalonName()))
-                return "You are already checkedin and your wait time is "+barberWaitTimeResponse.getWaitTime();
+            if ("Customer is already checkedIn".equals(customerCheckInResponse.getMessage())) {
+                return "You are already checked in, ask for your waittime";
+            }
 
-            return "Your wait time for salon "+barberWaitTimeResponse.getSalonName()
-                    +" is "+barberWaitTimeResponse.getWaitTime()+" minutes";
+            return "You are " + customerCheckInResponse.getMessage();
         }
         return "You are not authenticated, please link your find my salon account with alexa";
     }

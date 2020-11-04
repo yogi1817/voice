@@ -8,5 +8,5 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface IAlexaAdapter {
-    ResponseEnvelope processAlexaRequest(RequestEnvelope requestEnvelope, Map<String, String> headers);
+    ResponseEnvelope processAlexaRequest(RequestEnvelope requestEnvelope);
 }

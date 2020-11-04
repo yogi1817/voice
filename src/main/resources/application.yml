@@ -1,8 +1,13 @@
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8082}
   servlet:
     context-path: /findmysalon
 
 logging:
   level:
     com.spj.voice.alexa: DEBUG
+
+voice:
+  findmysalon:
+    waittimeuser: http://localhost:8081/findmysalon/checkin/barber/waittime
+    checkIn: http://localhost:8081/findmysalon/checkin/barber
