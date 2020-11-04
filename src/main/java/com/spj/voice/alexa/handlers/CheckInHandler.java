@@ -36,13 +36,11 @@ public class CheckInHandler implements RequestHandler {
 
     private String getSpeechText(HandlerInput handlerInput) {
         if (handlerInput.getRequestEnvelope() != null
-                && handlerInput.getRequestEnvelope().getContext() != null
-                && handlerInput.getRequestEnvelope().getContext().getSystem() != null
-                && handlerInput.getRequestEnvelope().getContext().getSystem().getUser() != null
-                && !StringUtils.isEmpty(handlerInput.getRequestEnvelope().getContext().getSystem().getUser().getAccessToken())) {
+                && handlerInput.getRequestEnvelope().getSession() != null
+                && handlerInput.getRequestEnvelope().getSession().getUser() != null
+                && !StringUtils.isEmpty(handlerInput.getRequestEnvelope().getSession().getUser().getAccessToken())) {
 
-            CustomerCheckInResponse customerCheckInResponse = findMySalonClient.checkInCustomer(handlerInput.getRequestEnvelope()
-                    .getContext().getSystem().getUser().getAccessToken());
+            CustomerCheckInResponse customerCheckInResponse = findMySalonClient.checkInCustomer(handlerInput.getRequestEnvelope().getSession().getUser().getAccessToken());
 
             if ("No Favourite Salon Found".equals(customerCheckInResponse.getMessage())) {
                 return "No Favourite Salon set, please set your favourite salon in app and then try this service again";
