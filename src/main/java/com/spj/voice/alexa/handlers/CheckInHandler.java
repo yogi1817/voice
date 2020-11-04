@@ -22,7 +22,7 @@ public class CheckInHandler implements RequestHandler {
 
     @Override
     public boolean canHandle(HandlerInput handlerInput) {
-        return handlerInput.matches(Predicates.intentName("findSalonWaitTime"));
+        return handlerInput.matches(Predicates.intentName("CheckMeIn"));
     }
 
     @Override

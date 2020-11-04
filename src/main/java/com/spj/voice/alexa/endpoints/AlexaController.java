@@ -33,11 +33,11 @@ public class AlexaController {
     private final IAlexaAdapter alexaAdapter;
 
     @PostMapping(value = "voice")
-    public ResponseEntity<ResponseEnvelope> requestIdCard(@RequestBody RequestEnvelope requestEnvelope,
+    public ResponseEntity<ResponseEnvelope> findMySalonSkill(@RequestBody RequestEnvelope requestEnvelope,
                                                           HttpServletRequest httpRequest,
                                                           @RequestHeader Map<String, String> headers) {
         try {
-            log.debug("inside requestIdCard");
+            log.debug("inside findMySalonSkill");
             verifyAlexaRequest(httpRequest);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
